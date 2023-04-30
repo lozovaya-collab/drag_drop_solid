@@ -1,11 +1,5 @@
-import React, { useEffect } from 'react';
-import {
-    BrowserRouter as
-        Router,
-        Routes,
-        Route,
-        useNavigate
-} from 'react-router-dom';
+import { createEffect } from 'solid-js';
+import { Router, Route, Routes, useNavigate } from "@solidjs/router";
 
 import { apiService } from '../../shared/api/swagger/swagger.js';
 
@@ -25,15 +19,16 @@ const MainContent = () => {
         }
     }
 
-    useEffect(() => {
+    createEffect(() => {
         getAuth();
-    }, [])
+    })
     return (
-        <Routes>
-            <Route exact path="/" element={<HomePage />} />
-            <Route path="/auth" element={<AuthPage />} />
-        </Routes> 
-        
+        <Router>
+            <Routes>
+                <Route path="/" component={HomePage} /> 
+                <Route path="/auth" component={AuthPage} /> 
+            </Routes>
+        </Router>
     )
 }
 

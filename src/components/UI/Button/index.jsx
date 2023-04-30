@@ -1,5 +1,3 @@
-import { React } from "react";
-
 import style from './style.module.scss';
 
 const Button = ({children, type = 'default', disabled = false, onClick, classNameOut = '', ...props }) => {

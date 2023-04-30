@@ -1,7 +1,9 @@
-import { apiService } from '../../shared/api/swagger/swagger.js';
+import { useNavigate } from '@solidjs/router';
+import { apiService } from '../../shared/api/swagger/swagger';
+import { Button } from "../../components"
 
 const MainHeader = () => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const logout = () => {
         apiService.logout.Logout();
@@ -14,7 +16,7 @@ const MainHeader = () => {
         <header>
             <div className="header">
                 <h1>TO DO APP (REACT)</h1>
-                {/* <Button onClick={logout} classNameOut="header__button">ВЫХОД</Button> */}
+                <Button onClick={logout} classNameOut="header__button">ВЫХОД</Button>
             </div>
         </header>
     )

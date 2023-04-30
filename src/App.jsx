@@ -1,6 +1,17 @@
+import { Show } from 'solid-js';
+import { MainHeader, MainContent } from "./layouts";
+import { useLocation } from "@solidjs/router";
+
 function App() {
+  const location = useLocation();
+  
   return (
-    <h1>APP </h1>
+    <>
+      <Show when={location && location.pathname === '/'}>
+        <MainHeader />
+      </Show>
+      <MainContent />
+    </>
   );
 }
 
