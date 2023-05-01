@@ -1,8 +1,8 @@
-// import  React, { useState, useEffect } from "react";
+import   { createSignal, createEffect } from "solid-js";
 
-// import { apiService } from '../../shared/api/swagger/swagger.js';
+import { apiService } from '../../shared/api/swagger/swagger.js';
 
-// import { Desk } from "../../components";
+import { Desk } from "../../components";
 
 const HomePage = () => {
   const statuses = [
@@ -20,40 +20,39 @@ const HomePage = () => {
     },
   ];
       
-  // const [tasks, setTasks] = useState([]);
-  // const [users, setUsers] = useState([]);
+  const [tasks, setTasks] = createSignal([]);
+  const [users, setUsers] = createSignal([]);
 
-  // const updateTasks = tasks => {
-  //   setTasks(tasks)
-  // }
+  const updateTasks = tasks => {
+    setTasks(tasks)
+  }
 
-  // useEffect(() => {
-  //   apiService.tasks.Get().then((res) => {
-  //     updateTasks(res.data);
-  //   });
+  createEffect(() => {
+    apiService.tasks.Get().then((res) => {
+      updateTasks(res.data);
+    });
 
-  //   apiService.users.Get().then((res) => {
-  //      setUsers(res.data)
-  //   });
-  // }, []);
+    apiService.users.Get().then((res) => {
+       setUsers(res.data)
+    });
+  });
 
   return (
-    <h2>HomePage</h2>
-    // <div className="todo-app">
-    //   {
-    //     statuses && statuses.map((status) => {
-    //         return (
-    //           <Desk
-    //             statusId={status.id}
-    //             statusTitle={status.name}
-    //             tasks={tasks}
-    //             users={users}
-    //             updateTasks={updateTasks}
-    //             key={status.id} />
-    //         );
-    //     })
-    //   }
-    // </div>
+    <div className="todo-app">
+      {
+        statuses && statuses.map((status) => {
+            return (
+              <Desk
+                statusId={status.id}
+                statusTitle={status.name}
+                tasks={tasks}
+                users={users}
+                updateTasks={updateTasks}
+                key={status.id} />
+            );
+        })
+      }
+    </div>
   )
 }
 

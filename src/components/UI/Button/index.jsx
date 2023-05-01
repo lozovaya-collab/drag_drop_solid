@@ -1,9 +1,11 @@
+import { createSignal, createEffect } from 'solid-js';
 import style from './style.module.scss';
 
-const Button = ({children, type = 'default', disabled = false, onClick, classNameOut = '', ...props }) => {
+const Button = ({ children, type = 'default', disabled = false, onClick, classNameOut = '',  ...props }) => {
+
   return (
     <button
-      className={`${style.button} ${classNameOut} ${type === "text" ? style['button--text'] : ''} ${disabled ? style['button--disabled'] : ''}`}
+      className={`${style.button} ${classNameOut ? classNameOut : ''} ${type === "text" ? style['button--text'] : ''} ${disabled ? style['button--disabled'] : ''}`}
       type={type}
       disabled={disabled}
       {...props}
@@ -14,4 +16,4 @@ const Button = ({children, type = 'default', disabled = false, onClick, classNam
   )
 }
 
-export  { Button }
+export { Button }

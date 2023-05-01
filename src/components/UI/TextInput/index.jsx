@@ -1,18 +1,17 @@
-import { React } from "react";
-
 import style from './style.module.scss';
 
-const TextInput = ({type, placeholder, value, onChange, ...props}) => {
+import { createSignal } from 'solid-js';
+
+const TextInput = (props) => {
+  const [value, setValue] = createSignal(props.value || '');
+  const handleChange = (event) => {
+    setValue(event.target.value);
+    props.onChange(event.target.value)
+  };
+
   return (
-    <input
-      value={value}
-      onChange={onChange}
-      className={style['text-input']}
-      type={type}
-      placeholder={placeholder}
-      {...props}
-    />
-  )
+    <input className={style['text-input']} type={props.type || 'text'} placeholder={props.placeholder} value={value()} onInput={handleChange} />
+  );
 }
 
 export { TextInput }

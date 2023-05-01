@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { createSignal, createEffect } from "solid-js";
 
 import { apiService } from "../../../shared/api/swagger/swagger";
 
 import { Popup, Button, ContentPopup } from '../../../components';
 
 const EditTaskPopup = ({ isDialog, show, user, updateTasks }) => {
-  const [task, setTask] = useState({
+  const [task, setTask] = createSignal({
     status_id: -1,
     title: "",
     description: "",
@@ -15,16 +15,17 @@ const EditTaskPopup = ({ isDialog, show, user, updateTasks }) => {
     show(false);
   };
 
-  const updateTask = (task) => {
-    setTask(task);
+  const updateTask = (newTask) => {
+    setTask(newTask);
   };
 
   const saveTask = () => {
+    console.log(task)
     apiService.tasks
-      .Update(task.id, {
-        status_id: task.status_id,
-        description: task.description,
-        title: task.title,
+      .Update(task().id, {
+        status_id: task().status_id,
+        description: task().description,
+        title: task().title,
       })
       .then(() => {
         apiService.tasks
@@ -48,7 +49,7 @@ const EditTaskPopup = ({ isDialog, show, user, updateTasks }) => {
     return (
       <>
         <div>
-          <ContentPopup newTask={task} updateTask={(value) => updateTask({...task, ...value})} />
+          <ContentPopup newTask={task} updateTask={(value) => updateTask({...task(), ...value})} />
         </div>
       </>
     )
@@ -59,13 +60,13 @@ const EditTaskPopup = ({ isDialog, show, user, updateTasks }) => {
       <>
         <Button onClick={closePopup} type={'text'}>ОТМЕНА</Button>
         {task && task.author_id === user &&
-          <Button onClick={saveTaskgit }>СОХРАНИТЬ</Button>
+          <Button onClick={saveTask}>СОХРАНИТЬ</Button>
         }
       </>
     )
   };
 
-  useEffect(() => { 
+  createEffect(() => { 
     apiService.tasks.GetById(isDialog).then((res) => {
       updateTask(res.data);
     });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { createSignal } from "solid-js";
 
 import { apiService } from "../../../shared/api/swagger/swagger";
 
@@ -9,18 +9,21 @@ const CreateTaskPopup = ({ isDialog, show, updateTasks }) => {
     show(false);
   }
 
-  const [task, setTask] = useState({
+  const [task, setTask] = createSignal({
     status_id: isDialog,
     title: "",
     description: "",
   })
 
-  const updateTask = (task) => {
-    setTask(task);
+  const updateTask = (newTask) => {
+    console.log('task', newTask)
+    setTask({ ...task(), ...newTask });
+    console.log(task())
   }
 
   const saveTask = () => {
-    apiService.tasks.Create(task).then(() => {
+    console.log(task())
+    apiService.tasks.Create(task()).then(() => {
       apiService.tasks
         .Get()
         .then((res) => {

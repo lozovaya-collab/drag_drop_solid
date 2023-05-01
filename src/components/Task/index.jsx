@@ -1,5 +1,3 @@
-import React from 'react';
-
 import deletePng from '../../assets/images/delete.png';
 
 const Task = ({ task, edit, userLogin, deleteTask, ...props }) => {

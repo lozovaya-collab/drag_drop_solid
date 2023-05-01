@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Combobox, TextInput, TextArea } from '../../../components';
 
 import style from './style.module.scss';
@@ -21,7 +19,8 @@ const ContentPopup = ({ newTask, updateTask }) => {
   ]
   
   const updateValue = (event, prop) => {
-    updateTask({ [prop]: event.target.value})
+    if(prop === 'title') updateTask({ [prop]: event})
+    else updateTask({ [prop]: event.target.value})
   }
 
   return (
@@ -29,16 +28,17 @@ const ContentPopup = ({ newTask, updateTask }) => {
       {newTask &&
         <div className={style['content-task']}>
           <Combobox
-            value={newTask.status_id}
+            value={newTask().status_id}
             onChange={(e) => updateValue(e, 'status_id')}
             list={statuses}
           />
           <TextInput
-            value={newTask.title}
-            onChange={(e) => updateValue(e, 'title')}
+              value={newTask().title}
+              onChange={(e) => updateValue(e, 'title')}
+              type={'text'}
           />
           <TextArea
-            value={newTask.description}
+            value={newTask().description}
             onChange={(e) => updateValue(e, 'description')}
           />
         </div>

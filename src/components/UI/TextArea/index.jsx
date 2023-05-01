@@ -1,5 +1,3 @@
-import React from "react";
-
 import style from './style.module.scss';
 
 const TextArea = ({ placeholder, text, onChange, ...props }) => {

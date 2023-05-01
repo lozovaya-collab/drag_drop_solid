@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { createSignal, createEffect } from "solid-js";
 
 import { apiService } from "../../shared/api/swagger/swagger";
 
@@ -7,8 +7,8 @@ import { Button, Task, CreateTaskPopup, EditTaskPopup } from "../../components";
 const Desk = ({ statusId, statusTitle, tasks, updateTasks, users }) => {
     let currTask = null;
     const currentUser = localStorage.getItem("user") && JSON.parse(localStorage.getItem("user"));
-    let [selectedStatus, setSelectedStatus] = useState(null);
-    let [selectedTask, setSelectedTask] = useState(null);
+    let [selectedStatus, setSelectedStatus] = createSignal(null);
+    let [selectedTask, setSelectedTask] = createSignal(null);
 
     const preventEvent = (e) => e.preventDefault();
 
@@ -23,7 +23,7 @@ const Desk = ({ statusId, statusTitle, tasks, updateTasks, users }) => {
     const onDrop = (e, id) => {
         e.dataTransfer.dropEffect = "move";
         const taskId = parseInt(e.dataTransfer.getData("taskId"));
-        const cloneTasks = [...tasks]
+        const cloneTasks = [...tasks()]
 
         const newTasks = cloneTasks.map((x) => {
             if (x.id === taskId) {
@@ -34,7 +34,7 @@ const Desk = ({ statusId, statusTitle, tasks, updateTasks, users }) => {
                     status_id: x.status_id,
                     description: x.description,
                     title: x.title,
-                 });
+                });
             }
             return x;
         });
@@ -80,16 +80,16 @@ const Desk = ({ statusId, statusTitle, tasks, updateTasks, users }) => {
                 onDragOver={e => preventEvent(e)}
                 onDragEnter={e => preventEvent(e)}
                 style={{
-                    height: `${82 + (tasks.filter((x) => x.status_id === statusId).length - 1) * 42 + 42}px`
+                    height: `${82 + (tasks().filter((x) => x.status_id === statusId).length - 1) * 42 + 42}px`
                 }}
             >
                 <div className="desk_title">
-                    <h4> {statusTitle} </h4>
+                    <h4> {statusTitle()} </h4>
                 </div>
                 <div className="desk_tasks">
                     {
-                        tasks && 
-                        tasks.filter((item) => item.status_id === statusId).map((task, index) => {
+                        tasks() && 
+                        tasks().filter((item) => item.status_id === statusId).map((task, index) => {
                             return (
                                 <Task
                                     edit={openEditPopup}
@@ -97,13 +97,13 @@ const Desk = ({ statusId, statusTitle, tasks, updateTasks, users }) => {
                                     onDragStart={e => onDragStart(e, task)}
                                     onDragOver={e => onDragOver(task)}
                                     style={{
-                                        top: `${index * 40}px`
+                                        top: `${(index + 1) * 40}px`
                                     }}
                                     userLogin={task.author_id === currentUser.id ? 
                                         -1 
                                         : 
-                                        users.find((item) => item.id === task.author_id) &&
-                                        users.find((item) => item.id === task.author_id).login
+                                        users().find((item) => item.id === task.author_id) &&
+                                        users().find((item) => item.id === task.author_id).login
                                     }
                                     draggable="true"
                                     task={task}
@@ -115,23 +115,23 @@ const Desk = ({ statusId, statusTitle, tasks, updateTasks, users }) => {
                         onClick={() => openCreateTask(statusId)}
                         classNameOut="desk_action-btn"
                         style={{
-                            top: `${tasks.filter((x) => x.status_id === statusId).length * 40}px`
+                            top: `0px`
                         }}
                     >
                         Добавить задачу
                     </Button>
                 </div>
             </div>
-            {selectedStatus && 
+            {selectedStatus() && 
                 <CreateTaskPopup
-                    isDialog={selectedStatus}
+                    isDialog={selectedStatus()}
                     show={(value) => setSelectedStatus(value)}
                     updateTasks={(array) => updateTasks(array)}
                 />
             }
-            {selectedTask && 
+            {selectedTask() && 
                 <EditTaskPopup
-                    isDialog={selectedTask}
+                    isDialog={selectedTask()}
                     show={(value) => setSelectedTask(value)}
                     user={currentUser.id}
                     updateTasks={(array) => updateTasks(array)}
