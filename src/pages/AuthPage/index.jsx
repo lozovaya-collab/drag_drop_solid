@@ -17,14 +17,10 @@ const AuthPage = () => {
   let [isSignUp, setSignUp] = createSignal(false);
   
   const updateUser = (newUser) => {
-    console.log('newUser', newUser)
-    console.log(user().login && user().password)
     if(user().login && user().password){
       setDisabled(false);
     }
-    console.log(isDisabled())
     setUser({...user(), ...newUser});
-    console.log('user', user())
   }
 
   const toSignUpForm = () => {

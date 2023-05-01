@@ -16,13 +16,10 @@ const CreateTaskPopup = ({ isDialog, show, updateTasks }) => {
   })
 
   const updateTask = (newTask) => {
-    console.log('task', newTask)
     setTask({ ...task(), ...newTask });
-    console.log(task())
   }
 
   const saveTask = () => {
-    console.log(task())
     apiService.tasks.Create(task()).then(() => {
       apiService.tasks
         .Get()

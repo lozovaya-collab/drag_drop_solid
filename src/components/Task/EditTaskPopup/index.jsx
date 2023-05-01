@@ -20,7 +20,6 @@ const EditTaskPopup = ({ isDialog, show, user, updateTasks }) => {
   };
 
   const saveTask = () => {
-    console.log(task)
     apiService.tasks
       .Update(task().id, {
         status_id: task().status_id,
